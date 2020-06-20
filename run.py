@@ -1,6 +1,8 @@
 import logging
 import pathlib
+import schedule
 import subprocess
+import time
 
 from scrape import process_files
 
@@ -21,7 +23,9 @@ def main():
     data_dir = pathlib.Path("./COVID-19/")
 
     if data_dir.exists():
-        stdout = subprocess.run(["git", "-C", "./COVID-19/", "pull"], capture_output=True).stdout.decode("utf-8")
+        stdout = subprocess.run(
+            ["git", "-C", "./COVID-19/", "pull"], capture_output=True
+        ).stdout.decode("utf-8")
 
         if stdout == "Already up to date.\n":
             logging.info("No new data to update.")
@@ -56,5 +60,9 @@ def main():
     )
     subprocess.run(["git", "-C", "./COVID19-Nepal/", "push"])
 
+
 if __name__ == "__main__":
-    main()
+    schedule.every(12).hour.do(main)
+    while True:
+        schedule.run_pending()
+        time.sleep(1)

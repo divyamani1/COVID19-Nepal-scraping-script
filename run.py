@@ -7,11 +7,10 @@ import time
 from scrape import process_files
 
 logging.basicConfig(
-    filename="out.log",
-    filemode="a",
     format="%(asctime)s - %(levelname)s : %(message)s",
     datefmt="%d-%b-%y %H:%M:%S",
     level=logging.INFO,
+    handlers=[logging.FileHandler("debug.log"), logging.StreamHandler()],
 )
 
 
@@ -56,7 +55,14 @@ def main():
     subprocess.run(["mv", "covid19-nepal.csv", "./COVID19-Nepal/"])
     subprocess.run(["git", "-C", "./COVID19-Nepal/", "add", "covid19-nepal.csv"])
     subprocess.run(
-        ["git", "-C", "./COVID19-Nepal/", "commit", "-m", "'Update dataset'"]
+        [
+            "git",
+            "-C",
+            "./COVID19-Nepal/",
+            "commit",
+            "-m",
+            f"Update dataset ({latest_date})",
+        ]
     )
     subprocess.run(["git", "-C", "./COVID19-Nepal/", "push"])
 

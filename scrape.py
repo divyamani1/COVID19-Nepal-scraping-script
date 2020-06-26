@@ -1,4 +1,5 @@
 import glob
+import logging
 import re
 
 import pandas as pd
@@ -30,7 +31,9 @@ def process_files():
             "Combined_Key",
         ]
     )
+    logging.info("Created empty dataframe.")
 
+    logging.info("Looping over all files.")
     for filename in all_files:
         data = pd.read_csv(filename)
 
@@ -48,6 +51,7 @@ def process_files():
 
         datelist.append(reg.findall(filename)[0])
 
+    logging.info("Cleaning scraped data.")
     final_data = final_data.loc[
         :,
         [
@@ -64,6 +68,7 @@ def process_files():
 
     final_data = final_data.sort_values("date")
 
+    logging.info("Saving new data to CSV.")
     final_data.to_csv("covid19-nepal.csv", index=False)
 
     return max(datelist)

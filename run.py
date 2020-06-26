@@ -23,7 +23,7 @@ def main():
 
     if data_dir.exists():
         stdout = subprocess.run(
-            ["git", "-C", "./COVID-19/", "pull", "--depth", "1"], capture_output=True
+            ["git", "-C", "./COVID-19/", "pull"], capture_output=True
         ).stdout.decode("utf-8")
 
         if stdout == "Already up to date.\n":
@@ -32,7 +32,7 @@ def main():
 
     else:
         repository_url = "https://github.com/CSSEGISandData/COVID-19.git"
-        subprocess.run(["git", "clone", "--depth", "1", f"{repository_url}"])
+        subprocess.run(["git", "clone", f"{repository_url}"])
 
     try:
         latest_date = process_files()

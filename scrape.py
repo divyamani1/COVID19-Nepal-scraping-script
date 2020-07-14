@@ -4,17 +4,17 @@ import re
 
 import pandas as pd
 
-datadir = "./COVID-19/csse_covid_19_data/csse_covid_19_daily_reports/"
+datadir = "./csse_covid_19_daily_reports/"
 date_re = "\d+-\d+-\d+"
 
 reg = re.compile(date_re)
 
-all_files = glob.glob(datadir + "/*.csv")
 
 datelist = []
 
 
 def process_files():
+    all_files = glob.glob(datadir + "/*.csv")
     final_data = pd.DataFrame(
         columns=[
             "FIPS",

@@ -19,20 +19,8 @@ def main():
 
     logging.info("Cloning data repository.")
 
-    data_dir = pathlib.Path("./COVID-19/")
-
-    if data_dir.exists():
-        stdout = subprocess.run(
-            ["git", "-C", "./COVID-19/", "pull"], capture_output=True
-        ).stdout.decode("utf-8")
-
-        if stdout == "Already up to date.\n":
-            logging.info("No new data to update.")
-            return 0
-
-    else:
-        repository_url = "https://github.com/CSSEGISandData/COVID-19.git"
-        subprocess.run(["git", "clone", f"{repository_url}"])
+    repository_url = "https://github.com/CSSEGISandData/COVID-19/trunk/csse_covid_19_data/csse_covid_19_daily_reports"
+    subprocess.run(["svn", "export", f"{repository_url}", "--force"])
 
     try:
         latest_date = process_files()
